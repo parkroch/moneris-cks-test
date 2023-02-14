@@ -8,6 +8,8 @@ function monerisStart(ticket){
     myCheckout.setCallback("error_event", myErrorEvent);
     myCheckout.setCallback("payment_receipt", myPaymentReceipt);
     myCheckout.setCallback("payment_complete", myPaymentComplete);
+    myCheckout.setCallback("page_closed", myPageClosed);
+    myCheckout.setCallback("payment_submitted", myPaymentSubmitted);
 
     myCheckout.startCheckout(ticket);
 
@@ -17,18 +19,38 @@ function monerisStart(ticket){
 
     function myCancelTransaction(result){
         console.log("myCancelTransaction "+result);
+        monerisEventCall(result);
     }
 
     function myErrorEvent(result){
         console.log("myErrorEvent "+result);
+        monerisEventCall(result);
     }
 
     function myPaymentReceipt(result){
         console.log("myPaymentReceipt "+result);
+        monerisEventCall(result);
     }
 
     function myPaymentComplete(result){
         console.log("myPaymentComplete "+result);
-        location.reload();
+        monerisEventCall(result);
+    }
+
+    function myPageClosed(result){
+        console.log("myPageClosed "+result);
+        monerisEventCall(result);
+    }
+
+    function myPaymentSubmitted(result){
+        console.log("myPaymentSubmitted "+result);
+        monerisEventCall(result);
+    }
+
+    function monerisEventCall(result){
+        var event = new CustomEvent('monerisEvent',{
+            detail: result
+        });
+        window.dispatchEvent(event);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.moneris.controller;
 
 import com.example.moneris.model.MonerisResponse;
+import com.example.moneris.utils.JsonUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ public class MonerisController {
     private Environment env;
 
     @GetMapping(value="/pre-load")
-    public MonerisResponse initMonerisCheckout(@RequestParam double amount){
+    public JsonObject initMonerisCheckout(@RequestParam double amount){
 
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("store_id",env.getProperty("moneris.store.id"));
@@ -33,9 +35,24 @@ public class MonerisController {
         resultMap.put("action","preload");
 
         RestTemplate restTemplate = new RestTemplate();
-        String test = restTemplate.postForObject(env.getProperty("moneris.url"),resultMap, String.class);
+        String json = restTemplate.postForObject(env.getProperty("moneris.url"),resultMap, String.class);
 
-        Gson gson = new Gson();
-        return gson.fromJson(test, MonerisResponse.class);
+        return JsonUtils.convertStringToJSON(json);
+    }
+
+    @GetMapping(value="receipt")
+    public JsonObject receiptRequest(@RequestParam String ticket){
+        Map<String,String> resultMap = new HashMap<>();
+        resultMap.put("store_id",env.getProperty("moneris.store.id"));
+        resultMap.put("api_token",env.getProperty("moneris.api.token"));
+        resultMap.put("checkout_id",env.getProperty("moneris.checkout.id"));
+        resultMap.put("ticket",ticket);
+        resultMap.put("environment",env.getProperty("moneris.env"));
+        resultMap.put("action","receipt");
+
+        RestTemplate restTemplate = new RestTemplate();
+        String json = restTemplate.postForObject(env.getProperty("moneris.url"),resultMap, String.class);
+
+        return JsonUtils.convertStringToJSON(json);
     }
 }

@@ -1,8 +1,15 @@
 <router-outlet></router-outlet>
 
-<p>Test Moneris Checkout</p>
-<button (click)="makePayment()">Make a Payment</button>
-<br/><br/>
-<div class="moneris-layout">
+<div class="checkout-layout">
+    <p>Test Moneris Checkout</p>
+
+    <label for="amount">Amount:</label><br/>
+    <input id="amount" type="text" [(ngModel)]="amount"/>
+    <button (click)="makePayment()">Make a Payment</button>
+    <br/><br/>
+
+</div>
+
+<div [ngClass]="!!ticket ? 'moneris-layout':'' ">
     <div id="monerisCheckout"></div>
 </div>
