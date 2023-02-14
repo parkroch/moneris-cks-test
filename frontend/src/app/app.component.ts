@@ -19,7 +19,6 @@ export class AppComponent implements OnInit{
     ngOnInit(): void {}
 
     makePayment() {
-        console.log(this.amount);
         this.monerisService.getMonerisTicket(this.amount).subscribe(result=>{
             this.ticket = result.response.ticket;
             monerisStart(this.ticket);

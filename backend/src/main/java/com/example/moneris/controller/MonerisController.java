@@ -1,8 +1,6 @@
 package com.example.moneris.controller;
 
-import com.example.moneris.model.MonerisResponse;
 import com.example.moneris.utils.JsonUtils;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

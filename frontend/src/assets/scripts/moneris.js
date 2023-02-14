@@ -35,6 +35,7 @@ function monerisStart(ticket){
     function myPaymentComplete(result){
         console.log("myPaymentComplete "+result);
         monerisEventCall(result);
+        closeCheckout(result);
     }
 
     function myPageClosed(result){
@@ -52,5 +53,10 @@ function monerisStart(ticket){
             detail: result
         });
         window.dispatchEvent(event);
+    }
+
+    function closeCheckout(result){
+        var detail = JSON.parse(result);
+        myCheckout.closeCheckout(detail.ticket);
     }
 }
